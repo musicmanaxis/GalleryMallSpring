@@ -1,4 +1,4 @@
-package gallerymallbackend.gallerymallbackend;
+package gallerymallbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
