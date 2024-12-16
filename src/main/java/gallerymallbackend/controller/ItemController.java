@@ -24,10 +24,12 @@ import gallerymallbackend.repository.ItemRepository;
 @RestController //이 클래스가 컨트롤러 역할을 하며, 반환값이 자동으로 JSON 또는 XML형식으로 직렬화되어 HTTP 응답 본문에 포함.
 public class ItemController {
 
-@Autowired  //ItemRepository객체를 자동으로 주입. 이를 통해 별도의 객체 생성 코드 없이, ItemRepository를 바로 사용할 수 있습니다.
+//ItemRepository객체를 자동으로 주입. 이를 통해 별도의 객체 생성 코드 없이, ItemRepository를 바로 사용할 수 있습니다.
+@Autowired    ////Spring이 ItemRepository 타입의 객체(구현체)를 주입한다는 의미
 ItemRepository itemRepository;
 
-  @GetMapping("/api/items") ///api/items 경로로 들어오는 HTTP GET요청을 처리하고, 응답으로 Item 객체의 리스트를 반환합니다.
+///api/items 경로로 들어오는 HTTP GET요청을 처리하고, 응답으로 Item 객체의 리스트를 반환합니다.
+  @GetMapping("/api/items") 
   public List<Item> getItems(){
    List<Item> items=itemRepository.findAll();
     return items;  //데이터 조회:    ItemRepository를 통해 데이터베이스에서 items 테이블의 데이터를 조회합니다.
