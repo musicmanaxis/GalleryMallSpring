@@ -5,6 +5,11 @@
 // 3.itemRepository.findAll()을 호출하여 데이터베이스에서 items 테이블의 모든 레코드를 가져옵니다.
 // 4.조회된 데이터(리스트)가 JSON 형식으로 변환됩니다.
 // 5.클라이언트에게 JSON 데이터를 응답으로 보냅니다.
+
+// Item 클래스: 데이터의 구조와 단위 객체를 정의합니다.
+// ItemRepository 클래스: 데이터베이스와의 상호작용을 처리합니다.
+// ItemController 클래스: Item과 ItemRepository를 사용해 데이터를 조회, 조작한 후 클라이언트 요청을 처리하고 결과를 반환합니다.
+// 결과적으로, ItemController는 클라이언트와 서버, 데이터베이스 간의 데이터 흐름을 연결하는 중심 역할을 수행합니다.
 package gallerymallbackend.controller;
 import java.util.List;
 
