@@ -1,7 +1,14 @@
+//이 클래스는 Spring Boot의 컨트롤러로, 클라이언트(예: 브라우저 또는 API 호출자)로부터 들어오는 요청을 처리하고, 응답 데이터를 반환하는 역할
+// -동작 과정 (요청-응답 흐름)
+// 1.클라이언트가 GET /api/items 요청을 보냅니다.
+// 2.ItemController의 getItems 메서드가 실행됩니다.
+// 3.itemRepository.findAll()을 호출하여 데이터베이스에서 items 테이블의 모든 레코드를 가져옵니다.
+// 4.조회된 데이터(리스트)가 JSON 형식으로 변환됩니다.
+// 5.클라이언트에게 JSON 데이터를 응답으로 보냅니다.
 package gallerymallbackend.controller;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,15 +16,16 @@ import gallerymallbackend.entity.Item;
 import gallerymallbackend.repository.ItemRepository;
 
 
-@RestController
+@RestController //이 클래스가 컨트롤러 역할을 하며, 반환값이 자동으로 JSON 또는 XML형식으로 직렬화되어 HTTP 응답 본문에 포함.
 public class ItemController {
 
-@Autowired
+@Autowired  //ItemRepository객체를 자동으로 주입. 이를 통해 별도의 객체 생성 코드 없이, ItemRepository를 바로 사용할 수 있습니다.
 ItemRepository itemRepository;
 
-  @GetMapping("/api/items")
+  @GetMapping("/api/items") ///api/items 경로로 들어오는 HTTP GET요청을 처리하고, 응답으로 Item 객체의 리스트를 반환합니다.
   public List<Item> getItems(){
    List<Item> items=itemRepository.findAll();
-    return items;
+    return items;  //데이터 조회:    ItemRepository를 통해 데이터베이스에서 items 테이블의 데이터를 조회합니다.
+                    // itemRepository.findAll()을 호출하여 데이터베이스에 저장된 모든 items 테이블의 모든 레코드를 반환합니다.
   }
 }
