@@ -23,4 +23,14 @@ public class Item {
 
   @Column(length=255, nullable=false) //특정 필드가 매핑될 데이터베이스 컬럼의 이름, 길이, nullable 여부 등을 지정
   private String name;
+
+  @Column(length=255)
+  private String imgPath;  //실제 DB컬럼 이름이 _가 붙어있어도 이런식으로 해도 매핑이 된다.
+
+  @Column
+  private int price;
+
+  @Column
+  private int discountPrice;
+
 }
