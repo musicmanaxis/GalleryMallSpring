@@ -24,15 +24,16 @@ import gallerymallbackend.repository.ItemRepository;
 @RestController //이 클래스가 컨트롤러 역할을 하며, 반환값이 자동으로 JSON 또는 XML형식으로 직렬화되어 HTTP 응답 본문에 포함.
 public class ItemController {
 
-//ItemRepository객체를 자동으로 주입. 이를 통해 별도의 객체 생성 코드 없이, ItemRepository를 바로 사용할 수 있습니다.
-@Autowired    ////Spring이 ItemRepository 타입의 객체(구현체)를 주입한다는 의미
-ItemRepository itemRepository;
+
+@Autowired //스프링이 ItemRepository객체를 자동으로 주입. 별도의 객체 생성 코드 없이 ItemRepository를 바로 사용할 수 있다.   
+ItemRepository itemRepository; //ItemRepository의 메서드를 사용하기 위해 작성..findAll() 등등
 
 ///api/items 경로로 들어오는 HTTP GET요청을 처리하고, 응답으로 Item 객체의 리스트를 반환합니다.
   @GetMapping("/api/items") 
   public List<Item> getItems(){
    List<Item> items=itemRepository.findAll();
-    return items;  //데이터 조회:    ItemRepository를 통해 데이터베이스에서 items 테이블의 데이터를 조회합니다.
-                    // itemRepository.findAll()을 호출하여 데이터베이스에 저장된 모든 items 테이블의 모든 레코드를 반환합니다.
+    return items;  //데이터 조회:    ItemRepository를 통해 데이터베이스에서 items 테이블의 데이터를 조회.
+                    // itemRepository.findAll()을 호출하여 데이터베이스의 items 테이블의 모든 레코드를 반환다.
+                    //반환된 items는 스프링이 json형태로 변환하여 요청자에게 보여줌
   }
 }

@@ -11,6 +11,10 @@ import gallerymallbackend.entity.Item;
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 }
 
+// JpaRepository는 지정된 클래스(Item클래스)가 @Entity와 @Id가 올바르게 설정되어 있는지 확인하고,
+//  자동으로 CRUD에 필요한 메서드를 제공해주는 역할을 합니다.
+
+
 //JpaRepository<Item, Integer>에서 Item은 관리 대상 엔티티 클래스입니다.
 //이 Repository는 Item 엔티티와 연결된 데이터베이스 테이블(items)에 대해 CRUD 작업을 수행합니다.
 
