@@ -25,7 +25,7 @@ public class Item {
   private String name;
 
   @Column(length=255)
-  private String imgPath;  //실제 DB컬럼 이름이 _가 붙어있어도 이런식으로 해도 매핑이 된다.
+  private String imgPath;  //실제 DB컬럼 이름중간에 _가 붙어있어도(img_Path) 이런식으로 해도 매핑이 된다.
 
   @Column
   private int price;
