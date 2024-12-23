@@ -12,11 +12,12 @@ import gallerymallbackend.repository.MemberRepository;
 
 
 
+
 @RestController
 public class AccountController {
 
  @Autowired
-  MemberRepository memberRepository; 
+  MemberRepository memberRepository;
 
   @PostMapping("/api/account/login")
   public int login(@RequestBody Map<String, String> params) {
