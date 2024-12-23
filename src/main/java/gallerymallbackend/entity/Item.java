@@ -18,7 +18,7 @@ import lombok.Getter;
 public class Item {
 
   @Id  //필드가 Primary Key임을 나타냅니다.
-  @GeneratedValue(strategy=GenerationType.IDENTITY)  //Primary Key 값의 자동 생성 전략을 정의
+  @GeneratedValue(strategy=GenerationType.IDENTITY) //id 필드가 자동으로 증가되는 값임을 나타냅니다.
   private int id;
 
   @Column(length=255, nullable=false) //특정 필드가 매핑될 데이터베이스 컬럼의 이름, 길이, nullable 여부 등을 지정

@@ -19,6 +19,7 @@ public class AccountController {
  @Autowired
   MemberRepository memberRepository;
 
+//@PostMapping:서버에 데이터를 생성하거나 전송하기 위한 처리. @GetMapping은 데이터 조회
   @PostMapping("/api/account/login")
   public int login(@RequestBody Map<String, String> params) {
     Member member=memberRepository.findByEmailAndPassword(params.get("email"), params.get("password"));
