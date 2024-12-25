@@ -29,7 +29,7 @@ public class AccountController {
     if(member !=null){
       return member.getId();  //로그인 성공시 vue에게 member의 id를 반환, Login.vue 참조
     }
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);  //이 코드를 던지면 클라이언트는 HTTP 404 응답을 받게 됩니다. 
   } 
 }
 
