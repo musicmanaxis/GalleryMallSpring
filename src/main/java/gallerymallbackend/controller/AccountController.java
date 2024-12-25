@@ -3,9 +3,11 @@ package gallerymallbackend.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import gallerymallbackend.entity.Member;
 import gallerymallbackend.repository.MemberRepository;
@@ -23,10 +25,9 @@ public class AccountController {
     Member member=memberRepository.findByEmailAndPassword(params.get("email"), params.get("password"));
     
     if(member !=null){
-      return member.getId();
+      return member.getId();  //로그인 성공시 vue에게 member의 id를 반환, Login.vue 참조
     }
-      return 0;
-
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
   } 
 }
 
