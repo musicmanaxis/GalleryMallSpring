@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,15 +16,18 @@ import org.springframework.web.server.ResponseStatusException;
 import gallerymallbackend.entity.Member;
 import gallerymallbackend.repository.MemberRepository;
 import gallerymallbackend.service.JwtService;
-import gallerymallbackend.service.JwtServiceImpl;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+
 
 // HttpServletResponse역할 :클라이언트에게 데이터 전달, 응답 상태를 설정, 쿠키를 추가, HTTP 헤더 설정 등
 
 @RestController
 public class AccountController {
 
+@Autowired
+  JwtService jwtService;
  @Autowired
   MemberRepository memberRepository;
 
@@ -34,8 +39,7 @@ public class AccountController {
 
     Member member=memberRepository.findByEmailAndPassword(params.get("email"), params.get("password"));
     
-    if(member !=null){
-      JwtService jwtService=new JwtServiceImpl();
+     if(member !=null){
       int id= member.getId();  //로그인 성공시 vue에게 member의 id를 반환, Login.vue 참조
       
       String token1=jwtService.getToken("id", id);  //id값으로 토큰 변환
@@ -46,9 +50,22 @@ public class AccountController {
 
       return new  ResponseEntity<>(id, HttpStatus.OK);  //*2.로그인 성공시 200 OK와 함께 사용자의 id를 반환
       // ResponseEntity는 매개배변수의 순서가 바뀌면 안된다, 첫번째 매개변수 타입만 보고 <>안에 들어가는 타입을 결정한다.
-    }
+     }
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);  //이 코드를 던지면 클라이언트는 HTTP 404 응답을 받게 됩니다. 
-  } 
+    } 
+
+   @GetMapping("/api/account/check")
+    public ResponseEntity check(@CookieValue(value = "token", required = false) String token) {
+        Claims claims = jwtService.getClaims(token);
+
+        if (claims != null) {
+            int id = Integer.parseInt(claims.get("id").toString());
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
+    
   }
 
 //@RequestBody: 클라이언트가 HTTP 요청 본문(body)에 담아 보낸 데이터를 Java 객체로 변환해주는 역할, email과 password
