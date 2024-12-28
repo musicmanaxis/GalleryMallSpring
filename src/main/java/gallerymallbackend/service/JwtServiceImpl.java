@@ -27,13 +27,13 @@ public class JwtServiceImpl implements JwtService {
     public String getToken(String key, Object value) {
 
         Date expTime = new Date();
-        expTime.setTime(expTime.getTime() + 1000 * 60 * 30);
+        expTime.setTime(expTime.getTime() + 1000 * 60 * 30); //30분
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
         Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());
 
         Map<String, Object> headerMap = new HashMap<>();
-        headerMap.put("typ", "JWT");
-        headerMap.put("alg", "HS256");
+        headerMap.put("typ", "JWT");  //토큰의 타입
+        headerMap.put("alg", "HS256"); //서명 알고리즘
 
         Map<String, Object> map = new HashMap<>();
         map.put(key, value);
