@@ -2,6 +2,7 @@
 // Header: 토큰의 타입(JWT)과 서명 알고리즘(예: HS256).
 // Payload: 사용자 정보나 데이터를 포함.
 // Signature: 위조 방지를 위해 생성된 서명.
+//사용자의 id를 토큰으로 변환하는 코드입니다.
 
 package gallerymallbackend.service;
 
