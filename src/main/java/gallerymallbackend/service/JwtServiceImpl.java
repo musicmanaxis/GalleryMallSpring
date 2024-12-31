@@ -23,37 +23,40 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
 
+//JwtService 인터페이스의 구현체인 JwtServiceImpl 클래스에 @Service 어노테이션이 붙어 있으면, 
+//Spring은 해당 클래스 인스턴스를 Spring 컨테이너에 빈으로 등록 즉, 다른 클래스에서 @Autowired로 주입할 수 있다.
 @Service("jwtService")
-public class JwtServiceImpl implements JwtService {
+public class JwtServiceImpl implements JwtService {  //AccountController에서 사용함
 
     private String secretKey ="abbci2ioadij@@@ai17a662###8139!!!18ausudahd178316738687687@@ad6g";  
     //임의로 작성한 비밀키...이거 너무 짧아도 안되고 너무 길어도 안된다. 이건 예시이니까 실제로 사용하면 안된다.
 
     @Override
-    public String getToken(String key, Object value) {
+    public String getToken(String key, Object value) {  //사용자 정보를 입력받은 키와 값을 바탕으로 JWT를 생성
 
         Date expTime = new Date();
         expTime.setTime(expTime.getTime() + 1000 * 60 * 30); //30분
-        byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
-        Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());
+        byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);//문자열을 바이트 배열로 변환
+        Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());//암호화 키 생성
 
         Map<String, Object> headerMap = new HashMap<>();
         headerMap.put("typ", "JWT");  //토큰의 타입
         headerMap.put("alg", "HS256"); //서명 알고리즘
+        //JWT의 헤더(Header)에 메타데이터를 설정하는 작업
 
         Map<String, Object> map = new HashMap<>();
-        map.put(key, value);
+        map.put(key, value);  //클레임 데이터 설정
 
-        JwtBuilder builder = Jwts.builder().setHeader(headerMap)
-                .setClaims(map)
-                .setExpiration(expTime)
-                .signWith(signKey, SignatureAlgorithm.HS256);
+        JwtBuilder builder = Jwts.builder().setHeader(headerMap)//헤더 설정
+                .setClaims(map)//클레임 설정
+                .setExpiration(expTime)//만료 시간 설정
+                .signWith(signKey, SignatureAlgorithm.HS256);//서명 설정
 
         return builder.compact();
     }
 
     @Override
-    public Claims getClaims(String token) {
+    public Claims getClaims(String token) {  //제공된 토큰을 검증하고 클레임 정보를 추출
         if (token != null && !"".equals(token)) { //토큰이 null이 아니고 빈 문자열이 아닐 때
             try {
                 byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
@@ -70,3 +73,12 @@ public class JwtServiceImpl implements JwtService {
     }
 
 }
+
+//클레임이란?
+// JWT는 헤더(Header), 페이로드(Payload), **서명(Signature)**의 세 부분으로 구성되는데, 
+// 그 중 페이로드(Payload) 부분에 클레임이 들어갑니다.
+
+// 클레임은 토큰에 포함된 정보로, JWT를 통해 전달하려는 데이터를 나타냅니다. 
+// 예를 들어, 사용자의 ID, 권한 정보, 토큰의 만료 시간 등이 클레임으로 포함될 수 있습니다.
+//JWT는 클레임을 사용하여 사용자 정보, 인증 상태, 권한 정보 등을 안전하게 전달하고 검증
+//쿠키안에 토큰이 있고 토큰안에 클레임스가 있다

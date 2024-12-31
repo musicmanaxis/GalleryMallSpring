@@ -19,8 +19,8 @@ import gallerymallbackend.service.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-
-
+//이 클래스는 사용자가 로그인하면 JWT 토큰을 생성하여 클라이언트에게 쿠키로 전달하고(login 메서드), 
+//이후 요청 시 클라이언트가 보낸 쿠키의 토큰을 검증하는 역할(check 메서드)을 합니다.
 // HttpServletResponse역할 :클라이언트에게 데이터 전달, 응답 상태를 설정, 쿠키를 추가, HTTP 헤더 설정 등
 
 @RestController
@@ -28,13 +28,14 @@ public class AccountController {
 
 @Autowired
   JwtService jwtService;
- @Autowired
+
+ @Autowired  //스프링이 JpaRepository를 제공하기 때문에 가능
   MemberRepository memberRepository;
 
 //@PostMapping:서버에 데이터를 생성하거나 전송하기 위한 처리. @GetMapping은 데이터 조회
   @PostMapping("/api/account/login")
   public ResponseEntity login(@RequestBody Map<String, String> params, HttpServletResponse res){ 
-    //매개변수에 객체를 나열하면 Spring이  객체를 생성하고 자동으로 전달.  Map 객체와 HttpServletResponse 객체 모두 Spring이 생성하여 메서드에 전달
+    //@RequestBody로 인해 매개변수에 객체를 나열하면 Spring이  자동으로 JSON 데이터를 Java 객체로 매핑, 전달.  Map 객체와 HttpServletResponse 객체 모두 Spring이 생성하여 메서드에 전달
     //ResponseEntity는 Spring Framework에서 제공하는 클래스로, HTTP 응답 상태 코드와 함께 응답 본문을 포함할 수 있다.
 
     Member member=memberRepository.findByEmailAndPassword(params.get("email"), params.get("password"));
@@ -56,13 +57,16 @@ public class AccountController {
 
    @GetMapping("/api/account/check")
     public ResponseEntity check(@CookieValue(value = "token", required = false) String token) {
+      //required = false를 사용하면 쿠키가 없을 때도 예외가 발생하지 않고 null로 처리할 수 있어서 편리, 예외처리가 불필요
+      //쿠키안에 토큰이 있고 토큰안에 클레임스가 있다
         Claims claims = jwtService.getClaims(token);
 
         if (claims != null) {
-            int id = Integer.parseInt(claims.get("id").toString());
+            int id = Integer.parseInt(claims.get("id").toString());  //id가 int타입으로 선언됨
             return new ResponseEntity<>(id, HttpStatus.OK);
+            //ResponseEntity<>는 id의 매개변수가 int타입으로 추론가능함으로 실제로는 ResponseEntity<Integer>로 추론된다.
         }
-
+    //
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
     
