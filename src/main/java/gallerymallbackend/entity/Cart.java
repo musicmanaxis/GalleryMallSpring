@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+@Getter 
 @Setter
 @Entity
 @Table(name="cart")  
