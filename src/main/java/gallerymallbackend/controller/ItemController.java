@@ -5,6 +5,7 @@
 // 3.itemRepository.findAll()을 호출하여 데이터베이스에서 items 테이블의 모든 레코드를 가져옵니다.
 // 4.조회된 데이터(리스트)가 JSON 형식으로 변환됩니다.
 // 5.클라이언트에게 JSON 데이터를 응답으로 보냅니다.
+// 6.디비 테이블에 데이터를 꺼내와서 보관하는 것은 List형태로 보관한다.
 
 // **일반적인 작성순서**
 // 1.Item 클래스: 데이터의 구조와 단위 객체를 정의합니다.
@@ -32,7 +33,7 @@ ItemRepository itemRepository; //ItemRepository의 메서드를 사용하기 위
 ///api/items 경로로 들어오는 HTTP GET요청을 처리하고, 응답으로 Item 객체의 리스트를 반환합니다.
   @GetMapping("/api/items") 
   public List<Item> getItems(){
-   List<Item> items=itemRepository.findAll();
+   List<Item> items=itemRepository.findAll();  //jpa 리포지터리 메서드 반환형이 List<>형태이다.
     return items;  //데이터 조회:    ItemRepository를 통해 데이터베이스에서 items 테이블의 데이터를 조회.
                     // itemRepository.findAll()을 호출하여 데이터베이스의 items 테이블의 모든 레코드를 반환다.
                     //반환된 items는 스프링이 json형태로 변환하여 요청자에게 보여줌
