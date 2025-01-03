@@ -7,8 +7,11 @@ package gallerymallbackend.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import gallerymallbackend.entity.Item;
+import java.util.List;
+
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
+    List<Item> findByIdIn(List<Integer> ids);
 }
 
 // JpaRepository는 지정된 클래스(Item클래스)가 @Entity와 @Id가 올바르게 설정되어 있는지 확인하고,

@@ -72,6 +72,20 @@ public class JwtServiceImpl implements JwtService {  //AccountController에서 �
         return null;
     }
 
+    @Override
+    public boolean isVaild(String token) {  //토큰이 유효한지 검사
+        return this.getClaims(token) != null;
+    }
+
+    @Override
+    public int getId(String token) {  //토큰을 받아서 id를 반환
+        Claims claims = this.getClaims(token);
+
+        if (claims != null) {
+            return Integer.parseInt(claims.get("id").toString());
+        }
+        return 0;
+    }
 }
 
 //클레임이란?
