@@ -7,11 +7,14 @@ package gallerymallbackend.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import gallerymallbackend.entity.Item;
+import java.util.List;
+
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
+    List<Item> findByIdIn(List<Integer> ids);
 }
 
-// JpaRepository는 지정된 클래스(Item클래스)가 @Entity와 @Id가 올바르게 설정되어 있는지 확인하고,
+// JpaRepository는 지정된 클래스(Item클래스)에 @Entity와 @Id가 올바르게 설정되어 있는지 확인하고,
 //  자동으로 CRUD에 필요한 메서드를 제공해주는 역할을 합니다.
 
 
@@ -20,7 +23,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 //JpaRepository<Item, Integer>에서 Integer는 Item 엔티티의 기본 키(Primary Key)의 데이터 타입을 나타냅니다.
 //Item 클래스에서 기본 키는 id 필드로, 이 필드의 타입이 int입니다
-
 
 // Spring Data JPA의 JpaRepository는 이 두 가지 정보를 사용하여:
 

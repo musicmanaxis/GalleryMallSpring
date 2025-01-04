@@ -45,10 +45,10 @@ public class JwtServiceImpl implements JwtService {  //AccountController에서 �
         //JWT의 헤더(Header)에 메타데이터를 설정하는 작업
 
         Map<String, Object> map = new HashMap<>();
-        map.put(key, value);  //클레임 데이터 설정
+        map.put(key, value);  //(String:memeberId, Obejct지만 int형으로 들어롬)클레임 데이터 설정
 
         JwtBuilder builder = Jwts.builder().setHeader(headerMap)//헤더 설정
-                .setClaims(map)//클레임 설정
+                .setClaims(map)//map이 클레임으로 설정
                 .setExpiration(expTime)//만료 시간 설정
                 .signWith(signKey, SignatureAlgorithm.HS256);//서명 설정
 
@@ -62,6 +62,7 @@ public class JwtServiceImpl implements JwtService {  //AccountController에서 �
                 byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
                 Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());
                 return Jwts.parserBuilder().setSigningKey(signKey).build().parseClaimsJws(token).getBody();
+                //parseClaimsJws(token).getBody()를 통해 토큰의 Payload를 파싱하여 Claims 객체로 반환
             } catch (ExpiredJwtException e) {
                 // 만료됨
             } catch (JwtException e) {
@@ -72,6 +73,23 @@ public class JwtServiceImpl implements JwtService {  //AccountController에서 �
         return null;
     }
 
+    @Override
+    public boolean isVaild(String token) {  //토큰안에 클레임이 있는지 검사
+        return this.getClaims(token) != null;
+    }
+
+    @Override
+    public int getId(String token) {  //토큰을 받아서 토큰을 열어 클레임을 꺼내 클레임에서 int형인 id를 반환하는 메서드
+        Claims claims = this.getClaims(token);  //this는 JwtServiceImpl 클래스의 인스턴스
+
+        if (claims != null) {
+            return Integer.parseInt(claims.get("id").toString());
+            //claims.get("id")는 Object 타입이므로 toString()을 이용하여 String으로 변환한 뒤 int로 변환
+            //(Integer) claims.get("id") 같은 형변환이 가능하지만, 안전하지 않을 수 있다.
+            //클레임 값이 다른 타입(예: String, Long)이라면 ClassCastException**이 발생할 위험
+        }
+        return 0;
+    }
 }
 
 //클레임이란?
