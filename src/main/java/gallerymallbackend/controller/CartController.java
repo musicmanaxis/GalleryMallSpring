@@ -1,4 +1,3 @@
-
 package gallerymallbackend.controller;
 import java.util.List;
 

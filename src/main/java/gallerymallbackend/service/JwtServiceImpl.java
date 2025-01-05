@@ -32,20 +32,22 @@ public class JwtServiceImpl implements JwtService {  //AccountController에서 �
     //임의로 작성한 비밀키...이거 너무 짧아도 안되고 너무 길어도 안된다. 이건 예시이니까 실제로 사용하면 안된다.
 
     @Override
-    public String getToken(String key, Object value) {  //사용자 정보를 입력받은 키와 값을 바탕으로 JWT를 생성
+    public String getToken(String key, Object value) {  
+    //사용자 정보를 입력받은 키("id")와 값(int id)을 바탕으로 JWT를 생성
 
         Date expTime = new Date();
         expTime.setTime(expTime.getTime() + 1000 * 60 * 30); //30분
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);//문자열을 바이트 배열로 변환
         Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());//암호화 키 생성
 
-        Map<String, Object> headerMap = new HashMap<>();
+        Map<String, Object> headerMap = new HashMap<>(); //*1.헤더 설정:Object가 여기서는 String으로 변환되어 사용됨
         headerMap.put("typ", "JWT");  //토큰의 타입
         headerMap.put("alg", "HS256"); //서명 알고리즘
         //JWT의 헤더(Header)에 메타데이터를 설정하는 작업
 
-        Map<String, Object> map = new HashMap<>();
-        map.put(key, value);  //(String:memeberId, Obejct지만 int형으로 들어롬)클레임 데이터 설정
+        Map<String, Object> map = new HashMap<>();//*2.payload 설정:Obejct지만 int형으로 들어옴(클레임 데이터 설정)
+        map.put(key, value);   
+        //*1번과 2번 객체에서 2번째 인자에 Object를 사용함으로서 다양한 데이터 타입이 사용되어 지는 것을 확인할 수 있다.
 
         JwtBuilder builder = Jwts.builder().setHeader(headerMap)//헤더 설정
                 .setClaims(map)//map이 클레임으로 설정
