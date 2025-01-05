@@ -27,8 +27,8 @@ import gallerymallbackend.repository.ItemRepository;
 public class ItemController {
 
 
-@Autowired //스프링이 ItemRepository객체를 자동으로 주입. 별도의 객체 생성 코드 없이 ItemRepository를 바로 사용할 수 있다.   
-ItemRepository itemRepository; //ItemRepository의 메서드를 사용하기 위해 작성..findAll() 등등
+@Autowired //스프링이 ItemRepository객체를 자동으로 주입. 별도의 객체 생성 코드 없이 ItemRepository 객체를 바로 사용할 수 있다.   
+ItemRepository itemRepository; //ItemRepository객체의 메서드를 사용하기 위해 작성..findAll() 등등
 
 ///api/items 경로로 들어오는 HTTP GET요청을 처리하고, 응답으로 Item 객체의 리스트를 반환합니다.
   @GetMapping("/api/items") 
