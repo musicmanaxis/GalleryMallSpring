@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,4 +72,19 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
        }
        return new ResponseEntity<>(HttpStatus.OK);
   }
+
+  @DeleteMapping("/api/cart/items/{itemId}") //{ItemId}는 변수로 받아들이는 것이다.
+  public ResponseEntity removeCartItem(  //장바구니에 아이템을 담는 메서드
+    @PathVariable("itemId") int itemId, 
+    @CookieValue(value="token", required=false) String token
+    ){
+      if(!jwtService.isVaild(token)){  //토큰이 유효하지 않으면
+        throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);  //UNAUTHORIZED(401) 상태 코드를 반환
+      }
+      int memberId=jwtService.getId(token); 
+      Cart cart= cartRepository.findByMemberIdAndItemId(memberId, itemId);   
+
+      cartRepository.delete(cart);  //JpaRepository가 제공하는 delete()는 Cart 객체를 데이터베이스에서 삭제하는 기능을 수행합니다.
+      return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
