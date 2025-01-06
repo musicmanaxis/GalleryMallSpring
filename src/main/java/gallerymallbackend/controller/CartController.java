@@ -51,7 +51,7 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
   return new ResponseEntity<>(items, HttpStatus.OK);
 }
 
-@PostMapping("/api/cart/items/{ItemId}") //{ItemId}는 변수로 받아들이는 것이다.
+@PostMapping("/api/cart/items/{itemId}") //{ItemId}는 변수로 받아들이는 것이다.
   public ResponseEntity pushCartItem(  //장바구니에 아이템을 담는 메서드
     @PathVariable("itemId") int itemId, 
     @CookieValue(value="token", required=false) String token
