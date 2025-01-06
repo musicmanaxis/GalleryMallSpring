@@ -4,14 +4,15 @@
 //클래스는 데이터베이스와 통신할 수 있는 구체적인 메서드를 포함합니다. findAll, findById, save 등의 메서드가 자동으로 구현
 package gallerymallbackend.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import gallerymallbackend.entity.Item;
-import java.util.List;
 
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-    List<Item> findByIdIn(List<Integer> ids);
+    List<Item> findByIdIn(List<Integer> itemIdList);
 }
 
 // JpaRepository는 지정된 클래스(Item클래스)에 @Entity와 @Id가 올바르게 설정되어 있는지 확인하고,

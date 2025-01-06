@@ -38,13 +38,16 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
   }
   int memberId=jwtService.getId(token);
 
-  //헌재 디비에서 cart테이블에는 memberId와 itemId가 저장되어 있으므로 memberId로 아이템을 찾아야 한다.
-  List<Cart> cartList=cartRepository.findByMemberId(memberId);  //멤버아이디값으로 카트정보를 가져와서
-  List<Integer> itemIdList=cartList.stream().map(Cart::getItemId).toList();  //cartList에 있는 Cart 객체에서 itemId 값만 추출하여 새로운 List<Integer> 객체로 변환
-  List<Item> items=itemRepository.findByIdIn(itemIdList);  //ItemRepository에서 itemIdList에 있는 아이템을 찾아서 반환
+  List<Cart> cartList=cartRepository.findByMemberId(memberId);               //1
+  List<Integer> itemIdList=cartList.stream().map(Cart::getItemId).toList();  //2
+  List<Item> items=itemRepository.findByIdIn(itemIdList);                    //3 
 
+//1.헌재 디비에서 cart테이블에는 memberId와 itemId가 저장되어 있으므로 memberId로 아이템을 찾아야 한다.
+//2.동일한 멤버아이디값으로 여러개일 수 있는 카트객체들을 찾아서 리스트로 반환,
+// *여러개의 cart가 필요한 이유는 한명의 사용자가 여러개의 아이템을 장바구니에 담을 수 있기 때문이다. 동일한 memberId이더라도 여러개의 itemId로 cart객체를 여러개 만듦.
+//3.cartList에 있는 각 Cart 객체에서 itemId 값만 추출하여 새로운 List<Integer> 객체로 변환, toList()는 스트림의 최종연산함수
+//  ItemRepository에서 itemIdList에 있는 아이템을 찾아서 반환, List<Item> findByIdIn(List<Integer> ids)라고고 itemRepository에 정의되어 있음
 
-  //Cart::getItemId는 Cart클래스의 getItemId메서드를 사용
   return new ResponseEntity<>(items, HttpStatus.OK);
 }
 
@@ -58,12 +61,13 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
        }
        int memberId=jwtService.getId(token); 
        Cart cart= cartRepository.findByMemberIdAndItemId(memberId, itemId);   
+       //해당 사용자의 장바구니에 특정 상품{ItemId}이 이미 존재하는지 확인하는 코드
        
        if(cart==null){   
          cart=new Cart();   //특정 사용자의 카트를 새로 만드는것
          cart.setMemberId(memberId);
          cart.setItemId(itemId);
-         cartRepository.save(cart);
+         cartRepository.save(cart);  //save()는 Cart 객체를 데이터베이스에 저장하거나 업데이트하는 기능을 수행합니다.
        }
        return new ResponseEntity<>(HttpStatus.OK);
   }

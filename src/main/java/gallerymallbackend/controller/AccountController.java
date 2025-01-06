@@ -39,6 +39,7 @@ public class AccountController {
 
   @PostMapping("/api/account/login")//email과 password를 받아서 member테이블에서 id를 찾아서 쿠키와 id값을 반환하는 메서드
   public ResponseEntity login(@RequestBody Map<String, String> params, HttpServletResponse res){ 
+    //HttpServletResponse를 메서드의 매개변수로 선언하면, 스프링이 이를 객체로 생성주입함
     
     Member member=memberRepository.findByEmailAndPassword(params.get("email"), params.get("password"));
     
@@ -49,12 +50,13 @@ public class AccountController {
       Cookie cookie=new Cookie("token", token1);   //*2.토큰을 쿠키에 담는다. 이때 만들어진 토큰의 이름이 나중에 다시 사용할 이름이다.
       cookie.setHttpOnly(true);                //자바스크립트로는 접근할수 없도록 막아준다.
       cookie.setPath("/");                          //3.쿠키가 애플리케이션의 모든 경로에서 사용될 수 있도록 설정합니다.
-      res.addCookie(cookie);                            //4.쿠키를 응답헤더에 추가
+      res.addCookie(cookie);                            //*4.res가 쿠키를 응답헤더에 추가, 
+                                                        //*res를 별도로 return하지 않아도 ResponseEntity가 응답헤더와 본문을을 전송처리
 
-      return new  ResponseEntity<>(id, HttpStatus.OK);  //*2.로그인 성공시 200 OK와 함께 사용자의 id를 반환
+      return new  ResponseEntity<>(id, HttpStatus.OK);  //로그인 성공시 200 OK와 함께 사용자의 id를 반환
       // ResponseEntity는 매개배변수의 순서가 바뀌면 안된다, 첫번째 매개변수 타입만 보고 <>안에 들어가는 타입을 결정한다.
-      //쿠키가 추가된 응답헤더와 본문의 내용이 ResponseEntity를 이용하여 사용자에게 전송
-     }
+      }//IF문 종료
+      
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);  
       //이 코드를 던지면 클라이언트는 HTTP 404 응답을 받게 됩니다. 
     } 
