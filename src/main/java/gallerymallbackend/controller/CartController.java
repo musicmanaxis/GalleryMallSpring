@@ -67,7 +67,7 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
          cart=new Cart();   //특정 사용자의 카트를 새로 만드는것
          cart.setMemberId(memberId);
          cart.setItemId(itemId);
-         cartRepository.save(cart);  //save()는 Cart 객체를 데이터베이스에 저장하거나 업데이트하는 기능을 수행합니다.
+         cartRepository.save(cart);  //JpaRepository가 제공하는 save()는 Cart 객체를 데이터베이스에 저장하거나 업데이트하는 기능을 수행합니다.
        }
        return new ResponseEntity<>(HttpStatus.OK);
   }
