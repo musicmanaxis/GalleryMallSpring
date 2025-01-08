@@ -12,7 +12,8 @@ import gallerymallbackend.entity.Item;
 
 
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-    List<Item> findByIdIn(List<Integer> itemIdList);
+    List<Item> findByIdIn(List<Integer> itemIdList);  
+    //사용자가 정의한 메서드 jpa명명규칙에 따라 작성된 것임, SQL의 IN 연산자를 사용
 }
 
 // JpaRepository는 지정된 클래스(Item클래스)에 @Entity와 @Id가 올바르게 설정되어 있는지 확인하고,

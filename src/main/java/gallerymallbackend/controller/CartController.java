@@ -46,8 +46,8 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
 //1.헌재 디비에서 cart테이블에는 memberId와 itemId가 저장되어 있으므로 memberId로 아이템을 찾아야 한다.
 //2.동일한 멤버아이디값으로 여러개일 수 있는 카트객체들을 찾아서 리스트로 반환,
 // *여러개의 cart가 필요한 이유는 한명의 사용자가 여러개의 아이템을 장바구니에 담을 수 있기 때문이다. 동일한 memberId이더라도 여러개의 itemId로 cart객체를 여러개 만듦.
-//3.cartList에 있는 각 Cart 객체에서 itemId 값만 추출하여 새로운 List<Integer> 객체로 변환, toList()는 스트림의 최종연산함수
-//  ItemRepository에서 itemIdList에 있는 아이템을 찾아서 반환, List<Item> findByIdIn(List<Integer> ids)라고고 itemRepository에 정의되어 있음
+//  cartList에 있는 각 Cart 객체에서 itemId 값만 추출하여 새로운 List<Integer> 객체로 변환, toList()는 스트림의 최종연산함수
+//3.ItemRepository에서 itemIdList에 있는 아이템을 찾아서 반환, List<Item> findByIdIn(List<Integer> ids)라고고 itemRepository에 정의되어 있음
 
   return new ResponseEntity<>(items, HttpStatus.OK);
 }
