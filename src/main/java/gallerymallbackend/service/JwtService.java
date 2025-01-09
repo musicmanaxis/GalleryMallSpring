@@ -14,7 +14,7 @@ public interface JwtService {
 //2.토큰을 이용하여 클레임을 얻은 메서드 
     Claims getClaims(String token);  
 //3.토큰이 유효한지 검사하는 메서드(카트컨트롤러에서 사용자가 요청을 할 때 요청한 사용자가 올바른지.. 인자로 받은 토큰이 유효한지 검사)
-    boolean isVaild(String token);   
+    boolean isValid(String token);   
 //4.토큰을 이용하여 id를 얻는 메서드 
     int getId(String token);  
 }

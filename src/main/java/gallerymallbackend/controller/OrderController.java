@@ -1,4 +1,6 @@
 package gallerymallbackend.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +29,12 @@ OrderRepository orderRepository;
   public ResponseEntity getOrder(  //주문한 것을 보여주는 메서드 
      @CookieValue(value="token", required=false) String token
     ){
-      if(!jwtService.isVaild(token)){
+      if(!jwtService.isValid(token)){
         throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);
       }
 
       List<Order> orders=orderRepository.findAll();
+      System.out.println("orders"+orders);
       return new ResponseEntity<>(orders, HttpStatus.OK);
 
     }
@@ -44,7 +47,7 @@ OrderRepository orderRepository;
     @RequestBody OrderDto dto,
     @CookieValue(value="token", required=false) String token
     ){
-      if(!jwtService.isVaild(token)){
+      if(!jwtService.isValid(token)){
          throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);
        }
      

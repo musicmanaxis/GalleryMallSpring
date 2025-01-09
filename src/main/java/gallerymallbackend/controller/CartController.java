@@ -34,7 +34,7 @@ ItemRepository itemRepository;
 public ResponseEntity getCartItems(@CookieValue(value="token", required=false) String token){
   //@CookieValue: 클라이언트가 요청 시 함께 전송한 쿠키의 값을 읽어와 메서드 파라미터에 할당
   //클라이언트가 보낸 쿠키안에서 이름이 "token"인 값을 읽어와 token 변수에 할당
-  if(!jwtService.isVaild(token)){  //토큰이 유효하지 않으면
+  if(!jwtService.isValid(token)){  //토큰이 유효하지 않으면
     throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);  //UNAUTHORIZED(401) 상태 코드를 반환
   }
   int memberId=jwtService.getId(token);
@@ -57,7 +57,7 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
     @PathVariable("itemId") int itemId, 
     @CookieValue(value="token", required=false) String token
     ){
-      if(!jwtService.isVaild(token)){
+      if(!jwtService.isValid(token)){
          throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);
        }
        int memberId=jwtService.getId(token); 
@@ -78,7 +78,7 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
     @PathVariable("itemId") int itemId, 
     @CookieValue(value="token", required=false) String token
     ){
-      if(!jwtService.isVaild(token)){  //토큰이 유효하지 않으면
+      if(!jwtService.isValid(token)){  //토큰이 유효하지 않으면
         throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);  //UNAUTHORIZED(401) 상태 코드를 반환
       }
       int memberId=jwtService.getId(token); 

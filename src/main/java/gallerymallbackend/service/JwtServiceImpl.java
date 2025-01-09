@@ -76,7 +76,7 @@ public class JwtServiceImpl implements JwtService {  //AccountController에서 �
     }
 
     @Override
-    public boolean isVaild(String token) {  //토큰안에 클레임이 있는지 검사
+    public boolean isValid(String token) {  //토큰안에 클레임이 있는지 검사
         return this.getClaims(token) != null;
     }
 
