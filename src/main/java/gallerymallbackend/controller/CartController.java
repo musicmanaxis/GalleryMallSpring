@@ -52,11 +52,11 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
   return new ResponseEntity<>(items, HttpStatus.OK);
 }
 
+//**장바구니에 아이쳄을 담거나 장바구니에 아이쳄을 삭제하는 방식은 넘어온 itemId와 토큰으로 멤머id를 얻어 카트를 추가하거나 삭제하는 방식으로 쓰인다.
+
 @PostMapping("/api/cart/items/{itemId}") //{ItemId}는 변수로 받아들이는 것이다.
   public ResponseEntity pushCartItem(  //장바구니에 아이템을 담는 메서드
-    @PathVariable("itemId") int itemId, 
-    @CookieValue(value="token", required=false) String token
-    ){
+    @PathVariable("itemId") int itemId, @CookieValue(value="token", required=false) String token){
       if(!jwtService.isValid(token)){
          throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);
        }
@@ -68,16 +68,15 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
          cart=new Cart();   //특정 사용자의 카트를 새로 만드는것
          cart.setMemberId(memberId);
          cart.setItemId(itemId);
-         cartRepository.save(cart);  //JpaRepository가 제공하는 save()는 Cart 객체를 데이터베이스에 저장하거나 업데이트하는 기능을 수행합니다.
+         cartRepository.save(cart);  
+        //JpaRepository가 제공하는 save()는 Cart 객체를 새로운 데이터일 경우 INSERT SQL 실행. 기존 데이터일 경우 UPDATE SQL 실행.
        }
        return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @DeleteMapping("/api/cart/items/{itemId}") //{ItemId}는 변수로 받아들이는 것이다.
-  public ResponseEntity removeCartItem(  //장바구니에 아이템을 담는 메서드
-    @PathVariable("itemId") int itemId, 
-    @CookieValue(value="token", required=false) String token
-    ){
+  @DeleteMapping("/api/cart/items/{itemId}") //토큰을 통해 memberId와 넘어온 변수 itemId로 cart객체를 찾아서 cart객체를 삭제하는 방식
+
+  public ResponseEntity removeCartItem(@PathVariable("itemId") int itemId, @CookieValue(value="token", required=false) String token){
       if(!jwtService.isValid(token)){  //토큰이 유효하지 않으면
         throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);  //UNAUTHORIZED(401) 상태 코드를 반환
       }
@@ -87,4 +86,4 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
       cartRepository.delete(cart);  //JpaRepository가 제공하는 delete()는 Cart 객체를 데이터베이스에서 삭제하는 기능을 수행합니다.
       return new ResponseEntity<>(HttpStatus.OK);
     }
-}
+  }
