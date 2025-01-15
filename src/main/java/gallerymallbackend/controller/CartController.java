@@ -79,7 +79,6 @@ public ResponseEntity getCartItems(@CookieValue(value="token", required=false) S
   }
 
   @DeleteMapping("/api/cart/items/{itemId}") //토큰을 통해 memberId와 넘어온 변수 itemId로 cart객체를 찾아서 cart객체를 삭제하는 방식
-
   public ResponseEntity removeCartItem(@PathVariable("itemId") int itemId, @CookieValue(value="token", required=false) String token){
       if(!jwtService.isValid(token)){  //토큰이 유효하지 않으면
         throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);  //UNAUTHORIZED(401) 상태 코드를 반환
