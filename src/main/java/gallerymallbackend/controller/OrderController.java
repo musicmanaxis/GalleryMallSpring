@@ -16,6 +16,7 @@ import gallerymallbackend.entity.Order;
 import gallerymallbackend.repository.CartRepository;
 import gallerymallbackend.repository.OrderRepository;
 import gallerymallbackend.service.JwtService;
+import jakarta.transaction.Transactional;
 
 @RestController 
 public class OrderController {
@@ -34,20 +35,23 @@ CartRepository cartRepository;
       if(!jwtService.isValid(token)){
         throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);
       }
-
-      List<Order> orders=orderRepository.findAll();   //Repository에서 가져온 것은 리스트형태이다.
+      int memberId=jwtService.getId(token);
+      List<Order> orders=orderRepository.findByMemberIdOrderByIdDesc(memberId);//최근에 주문한 것을 최상단에 정렬
+      //Repository에서 가져온 것은 리스트형태이다.
       return new ResponseEntity<>(orders, HttpStatus.OK);
 
     }
-    
+
+@Transactional    
 @PostMapping("/api/orders")  //주문하는 메서드(사용자 주문정보(Json)->Dto->Entity->Repository를 통한 저장)
   public ResponseEntity pushOrder(@RequestBody OrderDto dto, @CookieValue(value="token", required=false) String token){
       if(!jwtService.isValid(token)){
          throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);
        }
      
+       int memberId=jwtService.getId(token);
        Order newOrder=new Order();  //dto를 order(엔티티)로 저장하기 위해 생성
-       newOrder.setMemberId(jwtService.getId(token));
+       newOrder.setMemberId(memberId);
        newOrder.setName(dto.getName());  //사용자가 넘긴 dto에서 엔티티에 저장
        newOrder.setAddress(dto.getAddress());
        newOrder.setPayment(dto.getPayment());
@@ -56,7 +60,7 @@ CartRepository cartRepository;
 
        orderRepository.save(newOrder);  //변환된 엔티티 객체를 JPA Repository를 사용하여 데이터베이스에 저장
        //저장하고 나면(결제를 완료하면) 카트를 비워주는 작업을 한다.
-       cartRepository.
+       cartRepository.deleteByMemberId(memberId);  //특정 사용자의 카트를 비우는 것
 
        return new ResponseEntity<>(HttpStatus.OK);
   }
