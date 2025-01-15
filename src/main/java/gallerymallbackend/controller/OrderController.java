@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import gallerymallbackend.dto.OrderDto;
 import gallerymallbackend.entity.Order;
+import gallerymallbackend.repository.CartRepository;
 import gallerymallbackend.repository.OrderRepository;
 import gallerymallbackend.service.JwtService;
 
@@ -24,6 +25,9 @@ JwtService jwtService;
 
 @Autowired
 OrderRepository orderRepository;
+
+@Autowired
+CartRepository cartRepository;
  
 @GetMapping("/api/orders") //주문한 것을 보여주는 메서드 
   public ResponseEntity getOrder(@CookieValue(value="token", required=false) String token){
@@ -51,6 +55,8 @@ OrderRepository orderRepository;
        newOrder.setItems(dto.getItems());
 
        orderRepository.save(newOrder);  //변환된 엔티티 객체를 JPA Repository를 사용하여 데이터베이스에 저장
+       //저장하고 나면(결제를 완료하면) 카트를 비워주는 작업을 한다.
+       cartRepository.
 
        return new ResponseEntity<>(HttpStatus.OK);
   }

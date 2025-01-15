@@ -36,7 +36,7 @@ public class JwtServiceImpl implements JwtService {  //AccountController에서 �
     //사용자 정보를 입력받은 키("id")와 값(int id)을 바탕으로 JWT를 생성
 
         Date expTime = new Date();
-        expTime.setTime(expTime.getTime() + 1000 * 60 * 30); //30분
+        expTime.setTime(expTime.getTime() + 1000 * 60 * 30); //*로그인 시간을 설정 30분
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);//문자열을 바이트 배열로 변환
         Key signKey = new SecretKeySpec(secretByteKey, SignatureAlgorithm.HS256.getJcaName());//암호화 키 생성
 

@@ -61,6 +61,22 @@ public class AccountController {
       //이 코드를 던지면 클라이언트는 HTTP 404 응답을 받게 됩니다. 
     } 
 
+
+    @PostMapping("/api/account/logout")
+    public ResponseEntity logout(HttpServletResponse res){ 
+      Cookie cookie=new Cookie("token", null);
+      cookie.setPath("/");
+      cookie.setMaxAge(0);
+      res.addCookie(cookie);
+
+      return  new ResponseEntity<>(HttpStatus.OK);
+     
+    }
+      
+    
+      
+
+
    @GetMapping("/api/account/check")
     public ResponseEntity check(@CookieValue(value = "token", required = false) String token) {
       //required = false를 사용하면 쿠키가 없을 때도 예외가 발생하지 않고 null로 처리할 수 있어서 편리, 예외처리가 불필요
