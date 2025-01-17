@@ -64,10 +64,10 @@ public class AccountController {
 
     @PostMapping("/api/account/logout")
     public ResponseEntity logout(HttpServletResponse res){ 
-      Cookie cookie=new Cookie("token", null);
-      cookie.setPath("/");
-      cookie.setMaxAge(0);
-      res.addCookie(cookie);
+      Cookie cookie=new Cookie("token", null);  //서버가 브라우저의 인증 쿠키(예: "token")를 삭제하도록 명령.
+      cookie.setPath("/");                            //쿠키가 도메인의 모든 경로에서 사용 가능하도록 설정
+      cookie.setMaxAge(0);                         //쿠키의 유효기간을 0으로 설정하여 즉시 만료시킴
+      res.addCookie(cookie);                              //응답 헤더를 통해 브라우저가 쿠키를 삭제하도록 요청
 
       return  new ResponseEntity<>(HttpStatus.OK);
      
