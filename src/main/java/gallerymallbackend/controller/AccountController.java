@@ -41,11 +41,12 @@ public class AccountController {
   public ResponseEntity login(@RequestBody Map<String, String> params, HttpServletResponse res){ 
     //HttpServletResponse를 메서드의 매개변수로 선언하면, 스프링이 이를 객체로 생성주입함
     
+    //#1.넘어온 params로 이메일과 비번으로 레포지토리에서 조회하여 멤버객체를 받아온다.
     Member member=memberRepository.findByEmailAndPassword(params.get("email"), params.get("password"));
     
      if(member !=null){
-      int id= member.getId();  //로그인 성공시 vue에게 member의 id를 반환, Login.vue 참조
-      
+      int id= member.getId();  
+   //#2.member객체를 이용해서 id를 뽑고 id를 사용해서 jwtService의 인증과정을 거친다.
       String token1=jwtService.getToken("id", id);  //1.member id값으로 토큰을 얻어낸다.
       Cookie cookie=new Cookie("token", token1);   //*2.토큰을 쿠키에 담는다. 이때 만들어진 토큰의 이름이 나중에 다시 사용할 이름이다.
       cookie.setHttpOnly(true);                //자바스크립트로는 접근할수 없도록 막아준다.
@@ -57,12 +58,16 @@ public class AccountController {
       // ResponseEntity는 매개배변수의 순서가 바뀌면 안된다, 첫번째 매개변수 타입만 보고 <>안에 들어가는 타입을 결정한다.
       }//IF문 종료
       
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);  
-      //이 코드를 던지면 클라이언트는 HTTP 404 응답을 받게 됩니다. 
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);   //클라이언트에 HTTP 404 응답전송. 
     } 
 
+    // 로그인 메서드 전체 흐름 요약
+    // #1.사용자 인증: 이메일과 비밀번호를 통해 데이터베이스에서 Member 객체를 조회.
+    // #2.JWT 생성: Member 객체에서 ID를 추출하고, 이 ID를 기반으로 JWT 토큰 생성.
+    // #3.JWT 전달:생성된 JWT 토큰을 쿠키에 담아 클라이언트에 전달.
+    // ***이후 클라이언트는 이 쿠키를 서버로 다시 보내면서 인증 상태를 유지.
 
-    @PostMapping("/api/account/logout")
+    @PostMapping("/api/account/logout")  //Header.vue에 로그아웃 처리가 있음
     public ResponseEntity logout(HttpServletResponse res){ 
       Cookie cookie=new Cookie("token", null);  //서버가 브라우저의 인증 쿠키(예: "token")를 삭제하도록 명령.
       cookie.setPath("/");                            //쿠키가 도메인의 모든 경로에서 사용 가능하도록 설정

@@ -23,8 +23,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
 
-//JwtService 인터페이스의 구현체인 JwtServiceImpl 클래스에 @Service 어노테이션이 붙어 있으면, 
-//Spring은 해당 클래스 인스턴스를 Spring 컨테이너에 빈으로 등록 즉, 다른 클래스에서 @Autowired로 주입할 수 있다.
+//@Service을 붙이면, Spring은 해당 클래스 인스턴스를 Spring 컨테이너에 빈으로 등록 즉, 다른 클래스에서 @Autowired로 주입할 수 있다.
 @Service("jwtService")
 public class JwtServiceImpl implements JwtService {  //AccountController에서 사용함
 
