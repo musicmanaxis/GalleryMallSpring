@@ -1,6 +1,8 @@
 // 데이터베이스의 orders 테이블과 매핑되는 객체, 주문 정보를 처리하기 위한 데이터 모델로 사용
 package gallerymallbackend.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,5 +39,10 @@ public class Order {
 
   @Column(length=500, nullable = false)
   private String items;  
+
+  @Column(columnDefinition = "DATETIME") // ✅ DATETIME 컬럼으로 지정
+    private LocalDateTime orderDate;
+
+
 }
 

@@ -7,8 +7,14 @@
 
 package gallerymallbackend.dto;
 
-import lombok.Getter;
+import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
 @Getter
 public class OrderDto {
 
@@ -17,5 +23,7 @@ public class OrderDto {
     private String payment;
     private String cardNumber;
     private String items;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
+    private LocalDateTime orderDate;
     
 }

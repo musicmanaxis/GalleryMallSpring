@@ -57,6 +57,8 @@ CartRepository cartRepository;
        newOrder.setPayment(dto.getPayment());
        newOrder.setCardNumber(dto.getCardNumber());
        newOrder.setItems(dto.getItems());
+       newOrder.setOrderDate(dto.getOrderDate());  //주문날짜
+       System.out.println(newOrder.getOrderDate());//주문 날짜 출력
 
        orderRepository.save(newOrder);  //#1.변환된 엔티티 객체를 JPA Repository를 사용하여 데이터베이스에 저장
                                         //저장하고 나면(결제를 완료하면) 카트를 비워주는 작업을 한다.
